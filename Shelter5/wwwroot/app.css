@@ -85,6 +85,12 @@ html {
 	height: 65%;
 }
 
+/* Overwrite default styles of hr */
+hr {
+	border: 1px solid #f1f1f1;
+	margin-bottom: 25px;
+}
+
 #room {
 	padding-top:50px;
     height: 35%;
@@ -131,6 +137,10 @@ h3 .green-text {
 	background-color: #F8F8F8;
 	border-color: #E7E7E7;
 }
+.navbar-inverse .btn-group {
+	margin-top: 10px;
+	background: #86a992;
+}
 
 	.navbar-inverse .navbar-brand {
 		color: #777;
@@ -156,17 +166,17 @@ h3 .green-text {
 		background-color: #E7E7E7;
 	}
 
-.dropdown {
+.dropdownMenu {
 	background-color: #F8F8F8;
 	color: #777;
 	position: relative;
 }
 
-.dropdown:hover > .dropdown-menu-right {
-	display: block;
-}
+	.dropdownMenu:hover > .dropdown-menu-right {
+		display: block;
+	}
 
-.dropdown > .dropdown-toggle:active {
-	/*Without this, clicking will make it sticky*/
-	pointer-events: none;
-}
+	.dropdownMenu > .dropdown-toggle:active {
+		/*Without this, clicking will make it sticky*/
+		pointer-events: none;
+	}

@@ -24,4 +24,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="models\" />
+    <Folder Include="Новая папка\" />
+  </ItemGroup>
+
 </Project>
