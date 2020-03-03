@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="myHeader">
 		<b-navbar  type="dark" variant="dark">
 			<b-navbar-brand href="#">Shelter5</b-navbar-brand>
 
@@ -8,7 +8,7 @@
 			<b-collapse id="nav-collapse" is-nav>
 				<b-navbar-nav>
 					<b-nav-form>
-						<b-button style="background:#f3e433" size="sm" class="my-2 my-sm-0" type="submit">Generate</b-button>
+						<b-button style="background-color:#28a745" size="sm" class="my-2 my-sm-0" type="submit">Generate</b-button>
 					</b-nav-form>
 					<b-nav-item-dropdown text="Scenario" right>
 						<b-dropdown-item href="#">Rename</b-dropdown-item>
@@ -47,5 +47,5 @@
 	
 </script>
 
-<style scoped>
+<style scoped>	
 </style>

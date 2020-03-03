@@ -1,11 +1,9 @@
 <template>
     <div class="home">
-		<HeaderNow v-if="0"></HeaderNow>
-		<HeaderStart v-else></HeaderStart>
 			<div id="wrapper">
 				<div class="container-fluid">
-					<NavbarB/>
-					<div class="container-pallete">
+					<NavbarB class="sidebar"/>
+					<div class="container-pallete1">
 						<div class="row" id="room">
 							<div class="col-sm-12 col-md-12 droppable" id="space">
 								<p style="color:#86a992">
@@ -58,4 +56,14 @@
 		padding-left: 210px;
 		height: 100%;
 	}
+	.sidebar{
+		float:left;
+		width:20%;
+	}
+	.container-pallete1{
+		margin-left:1%;
+		height:100%;
+	}
+	
+	
 </style>

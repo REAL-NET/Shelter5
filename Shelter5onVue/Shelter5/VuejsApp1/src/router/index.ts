@@ -4,7 +4,7 @@ import * as Auth from "@/components/pages/Authentication/index";
 //pages
 import Home from "@/components/pages/Home/Home.vue";
 import Registration from "@/components/pages/Authentication/Registration.vue";
-import Authentication from "@/components/pages/Authentication/Authentication.vue";
+import MyAuthentication from "@/components/pages/Authentication/Authentication.vue";
 
 // Global components
 //import Header from "@/components/pages/Header/Header.vue";
@@ -30,8 +30,8 @@ const router = new Router({
             // }
         }, {
             path: "/login",
-            name: "Authentication",
-            component: Authentication,
+            name: "MyAuthentication",
+            component: MyAuthentication,
         }, {
             path: "/registr",
             name: "Registration",

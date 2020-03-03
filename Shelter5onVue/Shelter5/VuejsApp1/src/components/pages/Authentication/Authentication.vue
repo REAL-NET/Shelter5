@@ -1,6 +1,6 @@
 <template>
-	<div class="container-big">
-		<form id="auth" onsubmit="">
+	<div class="container-big-auth">
+		<form id="authForm" onsubmit="">
 			<div class="container-reg">
 				<h3>Authorization</h3>
 				<p>Please fill in this form to log into your account.</p>
@@ -58,4 +58,8 @@
 </script>
 
 <style scoped>
+	.container-big-auth{
+		margin-left: 1%;
+		margin-top:1%;
+	}
 </style>

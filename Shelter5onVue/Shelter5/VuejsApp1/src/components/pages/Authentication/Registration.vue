@@ -1,5 +1,5 @@
 <template>
-	<div class="container-big">
+	<div class="container-big-auth">
 		<form id="reg" onsubmit="">
 			<div class="container-reg">
 				<h3>Register</h3>
@@ -50,4 +50,8 @@
 </script>
 
 <style scoped>
+	.container-big-auth{
+		margin-left: 1%;
+		margin-top:1%;
+	}
 </style>
