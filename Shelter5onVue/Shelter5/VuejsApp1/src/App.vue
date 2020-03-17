@@ -1,8 +1,8 @@
 <template>
 	<div id="app">
-		<MyHeaderStart v-if="auth"></MyHeaderStart>
-		<MyHeader v-else></MyHeader>
-		<router-view />
+		<MyHeaderStart class="header" v-if="auth"></MyHeaderStart>
+		<MyHeader class="header" v-else></MyHeader>
+		<div class="content"><router-view /></div>
 	</div>
 </template>
 
@@ -37,4 +37,10 @@
 
 <style lang="css" type="text/css">
 @import '../styles/app.css';
+.header{position:fixed;
+		width:100%;
+		z-index: 2;
+}
+	.content{top:56px;}
+
 </style>
