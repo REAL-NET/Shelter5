@@ -74,7 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dist\" />
+    <Folder Include="src\models\" />
+    <Folder Include="src\store\" />
     <Folder Include="src\plugins\" />
+    <Folder Include="src\store\modules\" />
     <Folder Include="styles\" />
     <Folder Include="public\" />
     <Folder Include="src\" />
@@ -98,7 +101,25 @@
     <TypeScriptCompile Include="src\components\pages\Authentication\index.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\models\comfort.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\models\condition.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\models\space.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\router\index.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\store\index.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\store\modules\spacePanel.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\store\modules\user.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

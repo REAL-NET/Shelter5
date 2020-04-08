@@ -12,7 +12,7 @@
 										<draggable class="dragArea list-group"
 												   :list="spaces"
 												   :group="{ name: 'spacesGroup', pull: 'clone', put: false }"
-												   :clone="cloneDog"
+												   :clone="spaceDrop"
 												   @change="log">
 				<b-list-group-item class="b-list-group-item" v-for="space in spaces" :key="space.id" scrollable>
 					<StructurElement :title="space"></StructurElement>
@@ -27,7 +27,7 @@
 						<draggable class="dragArea list-group"
 								   :list="comforts"
 								   :group="{ name: 'comfortsGroup', pull: 'clone', put: false }"
-								   :clone="cloneDog"
+								   :clone="comfortDrop"
 								   @change="log">
 							<b-list-group-item class="b-list-group-item" v-for="comfort in comforts" :key="comfort.id">
 								<StructurElement :title="comfort"></StructurElement>
@@ -41,7 +41,7 @@
 						<draggable class="dragArea list-group"
 								   :list="conditions"
 								   :group="{ name: 'conditionsGroup', pull: 'clone', put: false }"
-								   :clone="cloneDog"
+								   :clone="conditionDrop"
 								   @change="log">
 							<b-list-group-item class="b-list-group-item" v-for="condition in conditions" :key="condition.id">
 								<StructurElement :title="condition"></StructurElement>
@@ -87,7 +87,7 @@
 					Comfort
 				</p>
 				<draggable class="dragArea list-group"
-						   :list="comfortspanel"
+						   :list="comfortpanel"
 						   group="comfortsGroup"
 						   @change="log">
 					<div v-for="element in comfortpanel" :key="element.id">
@@ -123,7 +123,7 @@
 	import HeaderStart from '@/components/pages/Header/HeaderStart.vue';
 	import comfortElement from '@/components/pages/Home/comfortElement.vue';
 	import conditionElement from '@/components/pages/Home/conditionElement.vue';
-
+	import store from '@/store';
 	import draggable from 'vuedraggable';
 
 	@Component({
@@ -143,11 +143,11 @@
 		},
 		name: 'home',
 		props: {
-			spacespanel: {
-				type: Array,
-				required: false,
-				default: () => (['adw'])
-			},
+			//spacespanel: {
+			//	type: Array,
+			//	required: false,
+			//	default: () => (['adw'])
+			//},
 			comfortpanel: {
 				type: Array,
 				required: false,
@@ -178,17 +178,35 @@
 			log: function (evt) {
 				window.console.log(evt);
 			},
-			cloneDog: function(id: string, event) {
+			spaceDrop: function (id: string, event) {
+				store.commit.spacePanel.ADD_SPACE();
+				//var self = this;
+				//var i: any;
+				//for (i in self.$props.spacespanel) { console.log(self.$props.spacespanel[i]); }
+				//self.$props.spacespanel = self.$props.spacespanel.push(id);
+				//return id;
+			},
+			conditionDrop: function (id: string, event) {
 				var self = this;
 				var i: any;
-				for (i in self.$props.spacespanel) { console.log(self.$props.spacespanel[i]); }
-				self.$props.spacespanel = self.$props.spacespanel.push(id);
+				for (i in self.$props.conditionspanel) { console.log(self.$props.conditionspanel[i]); }
+				self.$props.conditionspanel = self.$props.conditionspanel.push(id);
+				return id;
+			},
+			comfortDrop: function (id: string, event) {
+				var self = this;
+				var i: any;
+				for (i in self.$props.comfortpanel) { console.log(self.$props.comfortpanel[i]); }
+				self.$props.comfortpanel = self.$props.comfortpanel.push(id);
 				return id;
 			}
 		}
 	})
 
-    export default class Home extends Vue {
+	export default class Home extends Vue {		
+		get spacepanel() {
+			return store.state.spacePanel.items;
+		}
     }
 </script>
 
