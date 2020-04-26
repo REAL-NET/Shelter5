@@ -1,4 +1,4 @@
-class Condition {
+export class Condition {
 
     readonly id: number;
     readonly name: string;

@@ -72,26 +72,29 @@
 					Space
 				</p>
 				<draggable class="dragArea list-group"
-						   :list="spacespanel"
+						   v-model="spacespanel"						   
 						   group="spacesGroup"
 						   @change="log">
-					<div  v-for="element in spacespanel" :key="element.id">
-						<p>{{element}}</p>
+					<div v-for="element in Array.from(spacepanel)" :key="element.id">
+						<p>
+							{{element.name}}
+							<b-icon @click="deleteSpace(element)" icon="x"></b-icon>
+						</p>
 					</div>
 				</draggable>
 			</div>
 		</div>
-		<div class="row" id="main">
+		<div class="row" id="main" @clearScenario="deleteThisScenario">
 			<div class="col-sm-6 col-md-6 droppable" id="comfort">
 				<p style="color:#86a992">
 					Comfort
 				</p>
 				<draggable class="dragArea list-group"
-						   :list="comfortpanel"
+						   v-model="comfortspanel"	
 						   group="comfortsGroup"
 						   @change="log">
-					<div v-for="element in comfortpanel" :key="element.id">
-						<comfortElement :title="element"></comfortElement>
+					<div v-for="element in Array.from(comfortpanel)" :key="element.id">
+						<comfortElement :title="element.name" @removeComfort="removeComfortFromPanel(element)"></comfortElement>
 					</div>
 				</draggable>
 			</div>
@@ -100,11 +103,11 @@
 					Condition
 				</p>
 				<draggable class="dragArea list-group"
-						   :list="conditionspanel"
-						   group="conditionsGroup"
+						   v-model="conditionspanel"
+					       :group="{ name: 'conditionsGroup', pull: 'clone', put: true }"
 						   @change="log">
-					<div v-for="element in conditionspanel" :key="element.id">
-						<conditionElement :title="element" :isTime="true"></conditionElement>
+					<div v-for="element in Array.from(conditionpanel)" :key="element.id">
+						<conditionElement :title="element.name" :isTime="true" @removeCondition="removeConditionFromPanel(element)"></conditionElement>
 					</div>
 				</draggable>
 			</div>
@@ -123,8 +126,15 @@
 	import HeaderStart from '@/components/pages/Header/HeaderStart.vue';
 	import comfortElement from '@/components/pages/Home/comfortElement.vue';
 	import conditionElement from '@/components/pages/Home/conditionElement.vue';
-	import store from '@/store';
 	import draggable from 'vuedraggable';
+	import { SpacePanelModule } from '@/store/modules/spacePanel';
+	import { Space } from '@/models/space';
+	import { Comfort } from '@/models/comfort';
+	import { Condition } from '@/models/condition';
+	import { ComfortPanelModule } from '@/store/modules/comfortPanel';
+	import { ConditionPanelModule } from '@/store/modules/conditionPanel';
+	import { BIcon, BIconX } from 'bootstrap-vue';
+	import { eventBus } from '@/main.ts';
 
 	@Component({
 		components: {
@@ -134,34 +144,20 @@
 			StructurElement,
 			comfortElement,
 			conditionElement,
-			draggable
+			draggable,
+			BIcon,
+			BIconX
 		},
 		data() {
-			return {
-			
+			return {			
 			}
 		},
 		name: 'home',
-		props: {
-			//spacespanel: {
-			//	type: Array,
-			//	required: false,
-			//	default: () => (['adw'])
-			//},
-			comfortpanel: {
-				type: Array,
-				required: false,
-				default: () => (['adw'])
-			},
-			conditionspanel: {
-				type: Array,
-				required: false,
-				default: () => (['adw'])
-	},
+		props: {			
 			spaces: {
 				type: Array,
 				required: false,
-				default: () => (['kitchen', 'bedroom', 'toilet','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen','kitchen'])
+				default: () => (['kitchen', 'bedroom', 'toilet']) //([new Space(1, 'kitchen'), new Space(2,'bedroom'), new Space(3,'toilet'), new Space(4, 'kitchen')])
 			},
 			comforts: {
 				type: Array,
@@ -177,35 +173,152 @@
 		methods: {
 			log: function (evt) {
 				window.console.log(evt);
-			},
-			spaceDrop: function (id: string, event) {
-				store.commit.spacePanel.ADD_SPACE();
-				//var self = this;
-				//var i: any;
-				//for (i in self.$props.spacespanel) { console.log(self.$props.spacespanel[i]); }
-				//self.$props.spacespanel = self.$props.spacespanel.push(id);
-				//return id;
-			},
-			conditionDrop: function (id: string, event) {
-				var self = this;
-				var i: any;
-				for (i in self.$props.conditionspanel) { console.log(self.$props.conditionspanel[i]); }
-				self.$props.conditionspanel = self.$props.conditionspanel.push(id);
-				return id;
-			},
-			comfortDrop: function (id: string, event) {
-				var self = this;
-				var i: any;
-				for (i in self.$props.comfortpanel) { console.log(self.$props.comfortpanel[i]); }
-				self.$props.comfortpanel = self.$props.comfortpanel.push(id);
-				return id;
-			}
+			}			
 		}
 	})
 
 	export default class Home extends Vue {		
-		get spacepanel() {
-			return store.state.spacePanel.items;
+		private spacespanel: Array<Space>;
+		private comfortspanel: Array<Comfort>;
+		private conditionspanel: Array<Condition>;
+		private id: number;
+
+		public beforeCreate() {
+			//const { mapState } = createNamespacedHelpers('spacespanel');
+			//this.$options.computed = {
+			//	...mapState(['spacepanel']),
+			//};
+		}
+
+		mounted(){
+			eventBus.$on('clearScenario', () =>
+				this.deleteThisScenario());
+	}
+
+		constructor() {
+			super();
+			this.id = 0;
+			this.spacespanel = [];
+			this.comfortspanel = [];
+			this.conditionspanel = [];
+		}		
+
+		get spacepanel(): Space[] {
+			let spaces = SpacePanelModule.spacesPanel;
+			return spaces;
+		}
+
+		get comfortpanel(): Comfort[] {
+			let comforts = ComfortPanelModule.comfortsPanel;
+			return comforts;
+		}
+
+		get conditionpanel(): Condition[] {
+			let conditions = ConditionPanelModule.conditionsPanel;
+			return conditions;
+		}
+
+		spaceDrop(spaceNew: string/* Space*/, evt: any) {
+			console.log("spa");
+			console.log(spaceNew);
+			console.log(evt);
+			this.$store
+				.dispatch("addSpaceOnPanel", new Space(this.id, spaceNew))
+				.then(() => {
+					console.log("Added space");
+				})
+				.catch(error => {
+					console.error(error);
+				});
+			this.id++;
+		}
+
+		comfortDrop(comfortNew: string/* Space*/, evt: any) {
+			console.log("com");
+			console.log(comfortNew);
+			console.log(evt);
+			this.$store
+				.dispatch("addComfortOnPanel", new Comfort(this.id, comfortNew))
+				.then(() => {
+					console.log("Added comfort");
+				})
+				.catch(error => {
+					console.error(error);
+				});
+			this.id++;
+		}
+
+		deleteSpace(space: Space) {
+			this.$store
+				.dispatch("deleteSpaceFromPanel", space)
+				.then(() => {
+					console.log("Delete space");
+				})
+				.catch(error => { 
+					console.error(error);
+				});
+		}
+
+		removeConditionFromPanel(condition: Condition) {
+			this.$store
+				.dispatch("deleteConditionFromPanel", condition)
+				.then(() => { console.log("Delete condition"); })
+				.catch(error => { console.error(error); });
+		}
+
+		removeComfortFromPanel(comfort: Comfort) {
+			this.$store
+				.dispatch("deleteComfortFromPanel", comfort)
+				.then(() => { console.log("Delete comfort"); })
+				.catch(error => { console.error(error); });
+		}
+
+		conditionDrop(conditionNew: string/* Space*/, evt: any) {
+			console.log("con");
+			console.log(conditionNew);
+			console.log(evt);
+			this.$store
+				.dispatch("addConditionOnPanel", new Condition(this.id, conditionNew, false))
+				.then(() => {
+					console.log("Added condition");
+					let tem = ConditionPanelModule.conditionsPanel;
+					console.log(tem);
+					let tem1 = ComfortPanelModule.comfortsPanel;
+					console.log(tem1);
+					let tem2 = SpacePanelModule.spacesPanel;
+					console.log(tem2);
+				})
+				.catch(error => {
+					console.error(error);
+				});
+			this.id++;
+		}
+
+		deleteThisScenario() {
+			this.$store
+				.dispatch("clearAllSpacePanel")
+				.then(() => {
+					console.log("Clear spacesPanel");
+				})
+				.catch(error => {
+					console.error(error);
+				});
+			this.$store
+				.dispatch("clearAllConditionPanel")
+				.then(() => {
+					console.log("Clear conditionPanel");
+				})
+				.catch(error => {
+					console.error(error);
+				});
+			this.$store
+				.dispatch("clearAllComfortPanel")
+				.then(() => {
+					console.log("Clear comfortPanel");
+				})
+				.catch(error => {
+					console.error(error);
+				});
 		}
     }
 </script>

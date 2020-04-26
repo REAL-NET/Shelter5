@@ -1,4 +1,4 @@
-class Space {
+export class Space {
 
     readonly id: number;
     readonly name: string;

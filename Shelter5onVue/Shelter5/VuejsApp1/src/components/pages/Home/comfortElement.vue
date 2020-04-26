@@ -1,10 +1,11 @@
 <template>
 	<div><b-row class="">
-	<b-col md="auto">
-		<link rel="icon" for="sb-inline" href="" type="image/x-icon" />
-		{{title}}
-		<img />
-	</b-col>
+			 <b-col md="auto">
+			 	<link rel="icon" for="sb-inline" href="" type="image/x-icon" />
+			 	{{title}}
+			 	<b-icon @click="removeItem" icon="x"></b-icon>
+			 	<img />
+			 </b-col>
 
 	<b-col md="auto">
 		<div class="mt-2">Value: {{ value }}</div>
@@ -25,6 +26,13 @@
 		data() {
 			return {
 				value: 0
+			}
+		},
+		methods: {
+			removeItem: function (e) {
+				//console.log(e);
+				// генерируем событие 'remove' и передаём id элемента
+				this.$emit('removeComfort');//, e.item.id);//, this.item.id
 			}
 		}
 	})

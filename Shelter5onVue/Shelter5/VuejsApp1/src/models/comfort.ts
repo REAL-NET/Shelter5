@@ -1,4 +1,4 @@
-class Comfort {
+export class Comfort {
 
     readonly id: number;
     readonly name: string;
@@ -7,7 +7,7 @@ class Comfort {
     readonly maxValue: number;
     value: number;
 
-    constructor(comfortId: number, comfortName: string, minValue: number = 0, maxValue = 100, comfortIcon: string = "wallet",) {
+    constructor(comfortId: number, comfortName: string, minValue: number = 0, maxValue = 100, comfortIcon: string = "wallet") {
 
         this.id = comfortId;
         this.name = comfortName;

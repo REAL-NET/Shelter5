@@ -1,7 +1,7 @@
 //import { AuthResponse } from "@/types/user";
 
 
-export interface UserState {
+export interface IUserState {
     username: null | string
     token: null | string
     expiration: Date | null
@@ -11,9 +11,9 @@ export default {
     state: {
         username: null,
         token: null,
-    } as UserState,
+    } as IUserState,
     mutations: {
-        SET_NAME(state: UserState, username: string) {
+        SET_NAME(state: IUserState, username: string) {
             state.username = username;
         },
         //SET_TOKEN(state: UserState, token: AuthResponse) {

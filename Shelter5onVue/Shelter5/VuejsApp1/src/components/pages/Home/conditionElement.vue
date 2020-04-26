@@ -1,13 +1,14 @@
 <template>
 	<div class="rowElement">
-		<link rel="icon" href="" type="image/x-icon" class="column"/>
+		<link rel="icon" href="" type="image/x-icon" class="column" />
 		{{title}}
+		<b-icon @click="removeItem" icon="x"></b-icon>
 		<img />
 
 		<div class="isTime" v-if="isTime">
 			<b-row>
 				<b-col size="md">
-					<p>Value: <b>{{ timeStart }} -- {{timeEnd}}</b></p>
+					<p>Value: <b>{{ timeStart }} Ч {{timeEnd}}</b></p>
 				</b-col>
 				<b-col md="auto">
 					<b-form-timepicker size="sm" v-model="timeStart" placeholder="Choose a time" locale="ru"></b-form-timepicker>
@@ -31,7 +32,7 @@
 
 <script lang="ts">
 	import Vue from 'vue'
-	import { Component, Prop } from 'vue-property-decorator'
+	import { Component, Prop, Emit } from 'vue-property-decorator'
 
 	@Component({
 		components: {
@@ -43,7 +44,14 @@
 				timeStart: '',     
 				timeEnd: ''
 			}
-		}
+		},
+		methods: {
+			removeItem: function (e) {
+				//console.log(e);
+				// генерируем событие 'remove' и передаЄм id элемента
+				this.$emit('removeCondition');//, e.item.id);//, this.item.id
+			}
+	}
 	})
 	export default class conditionElement extends Vue {
 		@Prop(String) readonly title: string | undefined
