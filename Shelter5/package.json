@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@types/jqueryui": "^1.12.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1"
   }
 }
